@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart Application</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .cart-card, .products-card {
+            border: 1px solid rgba(0,0,0,.125);
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            background-color: #ffffff;
+            height: 100%;
+        }
+        
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .product-btn {
+            text-align: left;
+            width: fit-content;
+        }
+        
+        .qty-input {
+            width: 60px;
+            text-align: center;
+        }
+        
+        .grand-total {
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding-right: 0.5rem;
+        }
+        
+        .table th {
+            background-color: #212529;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row g-4">
+        <!-- Products Section -->
+        <div class="col-md-6">
+            <div class="card products-card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Products</h5>
+                    <div class="products-list">
+                        <button class="btn btn-outline-primary product-btn" 
+                                data-name="Laptop" 
+                                data-price="50000">
+                            Add Laptop (₹50,000)
+                        </button>
+                        <button class="btn btn-outline-primary product-btn" 
+                                data-name="Headphones" 
+                                data-price="2000">
+                            Add Headphones (₹2,000)
+                        </button>
+                        <button class="btn btn-outline-primary product-btn" 
+                                data-name="Mouse" 
+                                data-price="800">
+                            Add Mouse (₹800)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shopping Cart Section -->
+        <div class="col-md-6">
+            <div class="card cart-card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Shopping Cart</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="cartTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartBody">
+                                <tr data-product="Headphones">
+                                    <td>Headphones</td>
+                                    <td>₹2000</td>
+                                    <td>
+                                        <input type="number" 
+                                               class="form-control form-control-sm qty-input" 
+                                               value="1" 
+                                               min="1" 
+                                               data-price="2000">
+                                    </td>
+                                    <td class="row-total">₹2000</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm remove-btn">Remove</button>
+                                    </td>
+                                </tr>
+                                <tr data-product="Mouse">
+                                    <td>Mouse</td>
+                                    <td>₹800</td>
+                                    <td>
+                                        <input type="number" 
+                                               class="form-control form-control-sm qty-input" 
+                                               value="3" 
+                                               min="1" 
+                                               data-price="800">
+                                    </td>
+                                    <td class="row-total">₹2400</td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm remove-btn">Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="grand-total">
+                        Grand Total: <span id="grandTotal">₹4400</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+    // Function to format currency
+    function formatCurrency(amount) {
+        return '₹' + amount.toLocaleString('en-IN');
+    }
+    
+    // Function to calculate grand total
+    function calculateGrandTotal() {
+        let grandTotal = 0;
+        $('.row-total').each(function() {
+            let amount = parseFloat($(this).text().replace(/[₹,]/g, ''));
+            grandTotal += amount;
+        });
+        $('#grandTotal').text(formatCurrency(grandTotal));
+    }
+    
+    // Function to update row total
+    function updateRowTotal(input) {
+        let $row = $(input).closest('tr');
+        let price = parseFloat($(input).data('price'));
+        let qty = parseInt($(input).val()) || 0;
+        let total = price * qty;
+        
+        $row.find('.row-total').text(formatCurrency(total));
+        calculateGrandTotal();
+    }
+    
+    // Add Product to Cart
+    $('.product-btn').click(function() {
+        let name = $(this).data('name');
+        let price = parseFloat($(this).data('price'));
+        
+        // Check if product already exists in cart
+        let existingRow = $(`tr[data-product="${name}"]`);
+        
+        if (existingRow.length > 0) {
+            // Update quantity if exists
+            let qtyInput = existingRow.find('.qty-input');
+            let currentQty = parseInt(qtyInput.val());
+            qtyInput.val(currentQty + 1);
+            updateRowTotal(qtyInput);
+        } else {
+            // Add new row
+            let newRow = `
+                <tr data-product="${name}">
+                    <td>${name}</td>
+                    <td>${formatCurrency(price)}</td>
+                    <td>
+                        <input type="number" 
+                               class="form-control form-control-sm qty-input" 
+                               value="1" 
+                               min="1" 
+                               data-price="${price}">
+                    </td>
+                    <td class="row-total">${formatCurrency(price)}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm remove-btn">Remove</button>
+                    </td>
+                </tr>
+            `;
+            $('#cartBody').append(newRow);
+            calculateGrandTotal();
+        }
+    });
+    
+    // Quantity change handler (using event delegation)
+    $(document).on('change keyup', '.qty-input', function() {
+        let val = parseInt($(this).val());
+        if (val < 1 || isNaN(val)) {
+            $(this).val(1);
+        }
+        updateRowTotal(this);
+    });
+    
+    // Remove item handler (using event delegation)
+    $(document).on('click', '.remove-btn', function() {
+        if (confirm('Are you sure you want to remove this item?')) {
+            $(this).closest('tr').remove();
+            calculateGrandTotal();
+            
+            // Show message if cart is empty
+            if ($('#cartBody tr').length === 0) {
+                $('#cartBody').append('<tr><td colspan="5" class="text-center text-muted">Your cart is empty</td></tr>');
+            }
+        }
+    });
+    
+    // Initialize grand total on page load
+    calculateGrandTotal();
+});
+</script>
+
+</body>
+</html>

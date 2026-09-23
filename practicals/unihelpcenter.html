@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Admission Help Center</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .header-section {
+            background-color: #0d6efd;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-title {
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 3rem;
+        }
+        
+        .accordion-item {
+            border: 1px solid rgba(0,0,0,.125);
+            margin-bottom: -1px;
+        }
+        
+        .accordion-button {
+            font-weight: 500;
+            color: #333;
+            background-color: #fff;
+            padding: 1rem 1.25rem;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: #cfe2ff;
+            color: #084298;
+            box-shadow: none;
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: rgba(0,0,0,.125);
+        }
+        
+        .accordion-body {
+            padding: 1.5rem;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="header-section text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="header-title display-5">University Admission Help Center</h1>
+                    <p class="header-subtitle mb-0">Frequently Asked Questions (FAQ)</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container faq-container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                
+                <!-- Bootstrap Accordion -->
+                <div class="accordion" id="admissionFAQ">
+                    
+                    <!-- FAQ Item 1: Eligibility Criteria -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseOne" 
+                                    aria-expanded="false" aria-controls="collapseOne">
+                                What are the eligibility criteria for admission?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" 
+                             aria-labelledby="headingOne" data-bs-parent="#admissionFAQ">
+                            <div class="accordion-body">
+                                Applicants must have completed higher secondary education (12th grade) with a minimum of 60% aggregate marks. For engineering programs, Mathematics and Physics are mandatory subjects. For business programs, Mathematics or Business Studies is preferred. International students must have equivalent qualifications recognized by the university.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2: Application Process -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseTwo" 
+                                    aria-expanded="false" aria-controls="collapseTwo">
+                                How can I apply for admission?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" 
+                             aria-labelledby="headingTwo" data-bs-parent="#admissionFAQ">
+                            <div class="accordion-body">
+                                Applications can be submitted online through our official admission portal. The application deadline for the Fall semester is June 30th, and for the Spring semester is November 30th. You will need to create an account, fill in the application form, upload required documents, and pay the application fee of ₹1,500. Early applications are encouraged as seats fill up quickly.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3: Fee Structure -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseThree" 
+                                    aria-expanded="false" aria-controls="collapseThree">
+                                What is the fee structure?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" 
+                             aria-labelledby="headingThree" data-bs-parent="#admissionFAQ">
+                            <div class="accordion-body">
+                                Tuition fees vary by program: Engineering programs cost ₹1,20,000 per semester, Business programs cost ₹90,000 per semester, and Arts & Science programs cost ₹60,000 per semester. Additional fees include examination fees (₹5,000 per year), library fees (₹2,000 per year), and laboratory fees where applicable. Hostel fees are separate and range from ₹40,000 to ₹60,000 per year depending on room type.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4: Scholarships (Expanded/Active) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseFour" 
+                                    aria-expanded="true" aria-controls="collapseFour">
+                                Are scholarships available?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse show" 
+                             aria-labelledby="headingFour" data-bs-parent="#admissionFAQ">
+                            <div class="accordion-body">
+                                Yes, merit-based and need-based scholarships are available for eligible students. Applications must be submitted along with admission forms. Merit scholarships cover up to 100% of tuition fees for students with 90%+ aggregate marks. Need-based scholarships require income proof and cover 25-75% of fees. Special scholarships are also available for sports achievers, cultural talents, and students from underrepresented communities.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5: Hostel Accommodation -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingFive">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseFive" 
+                                    aria-expanded="false" aria-controls="collapseFive">
+                                Is hostel accommodation provided?
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" 
+                             aria-labelledby="headingFive" data-bs-parent="#admissionFAQ">
+                            <div class="accordion-body">
+                                Yes, the university provides separate hostel facilities for male and female students within the campus. Rooms are available on twin-sharing and single-occupancy basis. All hostels are equipped with Wi-Fi, mess facilities serving nutritious meals, common rooms with TV, laundry services, and 24/7 security. Hostel allocation is done on a first-come-first-served basis, so apply early to secure a room.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 6: Required Documents -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSix">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#collapseSix" 
+                                    aria-expanded="false" aria-controls="collapseSix">
+                                What documents are required for admission?
+                            </button>
+                        </h2>
+                        <div id="collapseSix" class="accordion-collapse collapse" 
+                             aria-labelledby="headingSix" data-bs-parent="#admissionFAQ">
+                            <div class="accordion-body">
+                                Required documents include: (1) High school transcripts and certificates, (2) Transfer certificate from previous institution, (3) Migration certificate (for out-of-state students), (4) Valid ID proof (Aadhar Card/PAN Card/Passport), (5) Passport-size photographs (6 copies), (6) Caste/category certificate if applicable for reservation, (7) Income proof for need-based scholarships, and (8) Entrance exam score cards (JEE/CAT/University entrance test).
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End Accordion -->
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+</body>
+</html>

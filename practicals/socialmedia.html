@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect - Social Feed</title>
+    
+    <!-- Bootstrap  CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- Custom Styling t --- */
+        body {
+            background-color: #f0f2f5; 
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            padding-bottom: 50px;
+        }
+
+        /* Header */
+        .campus-header {
+            background-color: #1976d2; 
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        /* Main Container */
+        .feed-container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* Create Post Area */
+        .create-post-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Feed Cards */
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            border: 1px solid #ddd;
+        }
+
+        /* Hover Effect Requirement */
+        .post-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .post-content {
+            padding: 15px;
+        }
+
+        .post-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+
+        .post-text {
+            color: #444;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .interaction-links {
+            font-size: 0.8rem;
+            color: #65676b;
+            margin-top: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .interaction-links a {
+            color: #65676b;
+            text-decoration: none;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .interaction-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Action Buttons Row */
+        .action-bar {
+            display: flex;
+            justify-content: space-around;
+            padding: 5px;
+            border-top: 1px solid #eee;
+        }
+
+        .action-btn {
+            border: none;
+            background: transparent;
+            color: #65676b;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
+            width: 32%;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Specific button coloring logic via JS/Focus states */
+        .like-active {
+            background-color: #e7f3ff;
+            color: #1877f2 !important; 
+        }
+
+        /* Focus/Blur Highlight Styles */
+        .input-highlighted {
+            border: 2px solid #1877f2 !important;
+        }
+
+        /* Counter Styling */
+        #charCount {
+            font-size: 0.8rem;
+            color: #65676b;
+            float: right;
+        }
+
+        /* Comments Section (Hidden by default) */
+        .comment-section {
+            display: none;
+            padding: 10px 15px 15px;
+            background-color: #fafafa;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="campus-header text-center">
+        <div class="container">
+            <span class="brand-logo"><i class="fas fa-comment-alt me-2"></i>Campus Connect</span>
+        </div>
+    </header>
+
+    <div class="feed-container">
+        
+        <!-- Filter Section (Change Event) -->
+        <div class="mb-3">
+            <select id="categoryFilter" class="form-select shadow-sm">
+                <option value="all">All Posts</option>
+                <option value="research">Research Announcements</option>
+                <option value="events">Upcoming Events</option>
+                <option value="tech">Technology News</option>
+            </select>
+        </div>
+
+        <!-- post(Focus, Blur, Keyup Events) -->
+        <div class="create-post-card">
+            <label class="fw-bold mb-2 small text-muted">Share something...</label>
+            <textarea id="newPostInput" class="form-control mb-2" rows="3" placeholder="What's on your mind?"></textarea>
+            <div style="overflow: hidden;">
+                <small id="charCount">0 / 200</small>
+            </div>
+            <button class="btn btn-primary w-100 mt-2">Post</button>
+        </div>
+
+        <!-- Feed Container -->
+        <div id="feedContainer">
+            
+            <!-- Post 1: Research Grant -->
+            <article class="post-card" data-category="research">
+                <div class="post-content">
+                    <h4 class="post-title">Research Grant Announcement</h4>
+                    <p class="post-text">New government-funded AI research grants are now open.</p>
+                    
+                    <!-- Interaction Links -->
+                    <div class="interaction-links">
+                        <a href="#" class="report-link">Report</a> | 
+                        <a href="#" class="save-link">Save</a> | 
+                        <a href="#" class="hide-link">Hide</a>
+                    </div>
+
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <button class="action-btn like-trigger">
+                            <i class="far fa-thumbs-up me-1"></i> Like <span class="badge bg-light text-dark ms-1">2</span>
+                        </button>
+                        <button class="action-btn comment-trigger">
+                            <i class="far fa-comment-alt me-1"></i> Comment
+                        </button>
+                        <button class="action-btn share-trigger">
+                            <i class="fas fa-share me-1"></i> Share
+                        </button>
+                    </div>
+
+                    <!-- Hidden Comment Section -->
+                    <div class="comment-section">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" placeholder="Write a comment...">
+                            <button class="btn btn-outline-primary btn-sm">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Post 2: Workshop  -->
+            <article class="post-card" data-category="events">
+                <div class="post-content">
+                    <h4 class="post-title">Upcoming Data Science Workshop</h4>
+                    <p class="post-text">Join us for a hands-on workshop on Machine Learning. We will cover Python basics and Scikit-Learn.</p>
+                    
+                    <div class="interaction-links">
+                        <a href="#" class="report-link">Report</a> | 
+                        <a href="#" class="save-link">Save</a> | 
+                        <a href="#" class="hide-link">Hide</a>
+                    </div>
+
+                    <div class="action-bar">
+                        <button class="action-btn like-trigger">
+                            <i class="far fa-thumbs-up me-1"></i> Like <span class="badge bg-light text-dark ms-1">0</span>
+                        </button>
+                        <button class="action-btn comment-trigger">
+                            <i class="far fa-comment-alt me-1"></i> Comment
+                        </button>
+                        <button class="action-btn share-trigger">
+                            <i class="fas fa-share me-1"></i> Share
+                        </button>
+                    </div>
+
+                    <div class="comment-section">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" placeholder="Write a comment...">
+                            <button class="btn btn-outline-primary btn-sm">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <!-- Scripts: jQuery & Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            //click event
+
+            $('.like-trigger').click(function(e){
+                e.stopPropagation(); // Prevent triggering dblclick on parent
+                var $btn = $(this);
+                var $countSpan = $btn.find('.badge');
+                let currentCount = parseInt($countSpan.text());
+
+                if ($btn.hasClass('like-active')) {
+                    // Unlike
+                    $btn.removeClass('like-active');
+                    $btn.find('i').removeClass('fas').addClass('far'); // Solid -> Outline
+                    $countSpan.text(currentCount - 1);
+                } else {
+                    // Like
+                    $btn.addClass('like-active');
+                    $btn.find('i').removeClass('far').addClass('fas'); // Outline -> Solid
+                    $countSpan.text(currentCount + 1);
+                }
+            });
+
+            // COMMENT Toggle
+            $('.comment-trigger').click(function(e){
+                e.stopPropagation();
+                $(this).closest('.post-content').find('.comment-section').slideToggle(200);
+            });
+
+            // SHARE Functionality
+            $('.share-trigger').click(function(e){
+                e.stopPropagation();
+                alert("Link copied to clipboard! (Simulated Share)");
+            });
+
+            // LINKS (Report, Save, Hide)
+            $('.report-link').click(function(e){
+                e.preventDefault();
+                alert("Reason for report: \n1. Spam \n2. Harassment \n3. Other");
+            });
+
+            $('.save-link').click(function(e){
+                e.preventDefault();
+                alert("Post saved to your bookmarks.");
+            });
+
+            $('.hide-link').click(function(e){
+                e.preventDefault();
+                // Animate removal
+                $(this).closest('.post-card').fadeOut(500, function() { $(this).remove(); });
+            });
+
+
+            //dbclick event
+            
+            $('.post-text').dblclick(function(){
+                let $postContent = $(this).closest('.post-content');
+                let $likeBtn = $postContent.find('.like-trigger');
+                
+                $likeBtn.click();
+                
+                $(this).css('color', '#1877f2');
+                setTimeout(() => {
+                    $(this).css('color', '#444');
+                }, 500);
+            });
+
+            //keyup event
+
+            $('#newPostInput').on('keyup', function(){
+                let length = $(this).val().length;
+                let limit = 200;
+                $('#charCount').text(length + " / " + limit);
+                
+                if(length > 180) {
+                    $('#charCount').css('color', 'red');
+                } else {
+                    $('#charCount').css('color', '#65676b');
+                }
+            });
+
+
+            //focus and blur 
+
+            $('#newPostInput').focus(function(){
+                $(this).addClass('input-highlighted');
+            });
+
+            $('#newPostInput').blur(function(){
+                $(this).removeClass('input-highlighted');
+            });
+
+
+           //change event
+            
+            $('#categoryFilter').change(function(){
+                let selectedVal = $(this).val();
+                
+                $('.post-card').each(function(){
+                    let category = $(this).data('category');
+                    
+                    if(selectedVal === 'all' || category === selectedVal){
+                        $(this).fadeIn(300);
+                    } else {
+                        $(this).fadeOut(300);
+                    }
+                });
+            });
+
+            // 7. HOVER EVENT (Show extra options)   
+            
+            $('.post-card').hover(
+                function() {
+                    // Mouse Enter
+                    $(this).css('border-color', '#1877f2');
+                }, 
+                function() {
+                    // Mouse Leave
+                    $(this).css('border-color', '#ddd');
+                }
+            );
+
+        });
+    </script>
+</body>
+</html>

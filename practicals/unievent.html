@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Event Management Portal</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Page background tone */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* Hero Header */
+        .hero-section {
+            background-color: #0d6efd; /* Bootstrap primary blue */
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 300; /* Light weight to match screenshot */
+            letter-spacing: 0.5px;
+        }
+
+        /* Control Buttons spacing */
+        .control-bar .btn {
+            margin: 0 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        /* Event Cards */
+        .event-card {
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        /* Highlighted state (blue border) */
+        .event-card.highlighted {
+            border: 2px solid #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        }
+
+        /* Details block hidden by default */
+        .details-block {
+            display: none;
+            margin-bottom: 1rem;
+        }
+
+        .details-block.show {
+            display: block;
+        }
+
+        /* Card text styling */
+        .card-text {
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .detail-line {
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+            color: #212529;
+        }
+    </style>
+</head>
+<body>
+
+    <!--  HEADER -->
+    <header class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="hero-title mb-2">University Event Management Portal</h1>
+            <p class="lead mb-0">Explore and Register for Academic Events</p>
+        </div>
+    </header>
+
+    <!--  MAIN CONTENT  -->
+    <main class="container py-4">
+        
+        <!-- Control Buttons -->
+        <section class="control-bar d-flex justify-content-center flex-wrap mb-4" aria-label="Event controls">
+            <button id="btnShowAll" type="button" class="btn btn-success">Show All Events</button>
+            <button id="btnHideAll" type="button" class="btn btn-danger">Hide All Events</button>
+            <button id="btnToggleWorkshops" type="button" class="btn btn-warning text-dark">Toggle Workshops</button>
+        </section>
+
+        <!-- Events Grid -->
+        <section aria-label="Academic events">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="eventsContainer">
+
+                <!-- Card 1: Conference -->
+                <div class="col event-wrapper" data-category="conference">
+                    <article class="card event-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">AI International Conference</h5>
+                            <p class="card-text">Global research conference on Artificial Intelligence.</p>
+                            
+                            <div class="details-block">
+                                <p class="detail-line mb-1">Date: March 20, 2026</p>
+                                <p class="detail-line">Venue: Main Auditorium</p>
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm btn-view">View Details</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-highlight">Highlight</button>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 2: Workshop -->
+                <div class="col event-wrapper" data-category="workshop">
+                    <article class="card event-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Cyber Security Workshop</h5>
+                            <p class="card-text">Hands-on ethical hacking and security tools training.</p>
+                            
+                            <div class="details-block">
+                                <p class="detail-line mb-1">Date: April 5, 2026</p>
+                                <p class="detail-line">Venue: Lab 204</p>
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm btn-view">View Details</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-highlight">Highlight</button>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 3: Seminar -->
+                <div class="col event-wrapper" data-category="seminar">
+                    <article class="card event-card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Data Science Seminar</h5>
+                            <p class="card-text">Emerging trends in data analytics and machine learning.</p>
+                            
+                            <div class="details-block">
+                                <p class="detail-line mb-1">Date: May 10, 2026</p>
+                                <p class="detail-line">Venue: Seminar Hall B</p>
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-sm btn-view">View Details</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-highlight">Highlight</button>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!--  SCRIPTS  -->
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // 1. Toggle Date/Venue details per card
+            $('.btn-view').on('click', function () {
+                $(this).closest('.card').find('.details-block').toggleClass('show');
+            });
+
+            // 2. Toggle blue highlight border per card
+            $('.btn-highlight').on('click', function () {
+                var $card = $(this).closest('.card');
+                var $btn = $(this);
+
+                $card.toggleClass('highlighted');
+
+                // Swap button style to indicate active state
+                if ($card.hasClass('highlighted')) {
+                    $btn.removeClass('btn-outline-secondary').addClass('btn-secondary');
+                } else {
+                    $btn.removeClass('btn-secondary').addClass('btn-outline-secondary');
+                }
+            });
+
+            // 3. Show All Events
+            $('#btnShowAll').on('click', function () {
+                $('.event-wrapper').show();
+            });
+
+            // 4. Hide All Events
+            $('#btnHideAll').on('click', function () {
+                $('.event-wrapper').hide();
+            });
+
+            // 5. Toggle Workshop visibility
+            $('#btnToggleWorkshops').on('click', function () {
+                $('.event-wrapper[data-category="workshop"]').toggle();
+            });
+
+        });
+    </script>
+</body>
+</html>

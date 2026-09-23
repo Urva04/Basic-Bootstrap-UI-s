@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Portal | Notification Center</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CDN Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Exact background tone from screenshots */
+        body {
+            background-color: #f0f2f5;
+        }
+
+        /* Navbar bell button */
+        .bell-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background-color: #fff;
+            border-radius: 0.375rem;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .bell-wrapper .fa-bell {
+            color: #212529;
+            font-size: 1.1rem;
+        }
+
+        /* Card icons */
+        .card-icon {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Toast container stacking */
+        .toast-container {
+            z-index: 1055;
+        }
+
+        /* Ensure cards are equal height */
+        .notification-card {
+            border: none;
+            border-radius: 0.5rem;
+            transition: transform 0.15s ease-in-out;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Smooth alert entry */
+        .alert-dismissible {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-2" role="navigation" aria-label="Main navigation">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold" href="#">
+                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                Research Portal
+            </a>
+
+            <!-- Notification Bell -->
+            <div class="ms-auto">
+                <a href="#" class="bell-wrapper" id="bellButton" aria-label="Notifications">
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                    <span id="notifBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        4
+                        <span class="visually-hidden">unread notifications</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!--  MAIN  -->
+    <main class="container py-5">
+        <h1 class="h4 mb-3 fw-semibold">Research Notification Center</h1>
+
+        <!-- Dynamic Alert Container (Critical Alerts appear here) -->
+        <div id="alertContainer" class="mb-3" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- Notification Cards -->
+        <section aria-label="Notification categories">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                <!-- Card 1: Critical Deadline -->
+                <div class="col">
+                    <article class="card notification-card shadow-sm h-100 text-center">
+                        <div class="card-body d-flex flex-column align-items-center p-4">
+                            <i class="fas fa-triangle-exclamation card-icon text-danger" aria-hidden="true"></i>
+                            <h2 class="h6 card-title fw-semibold mb-3">Submission Deadline</h2>
+                            <button id="btnTriggerAlert" class="btn btn-danger w-100 mt-auto" aria-label="Trigger deadline alert">
+                                Trigger Alert
+                            </button>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 2: Grant Approval -->
+                <div class="col">
+                    <article class="card notification-card shadow-sm h-100 text-center">
+                        <div class="card-body d-flex flex-column align-items-center p-4">
+                            <i class="fas fa-money-bill card-icon text-success" aria-hidden="true"></i>
+                            <h2 class="h6 card-title fw-semibold mb-3">Grant Approval</h2>
+                            <button id="btnGrantToast" class="btn btn-success w-100 mt-auto" aria-label="Show grant approval toast">
+                                Show Toast
+                            </button>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 3: New Submission -->
+                <div class="col">
+                    <article class="card notification-card shadow-sm h-100 text-center">
+                        <div class="card-body d-flex flex-column align-items-center p-4">
+                            <i class="fas fa-clipboard-check card-icon text-primary" aria-hidden="true"></i>
+                            <h2 class="h6 card-title fw-semibold mb-3">New Submission</h2>
+                            <button id="btnSubmissionToast" class="btn btn-primary w-100 mt-auto" aria-label="Show new submission toast">
+                                Show Toast
+                            </button>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!--  TOAST CONTAINER (Bottom-Right) -->
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3" aria-live="polite" aria-atomic="true">
+        <!-- Toasts injected dynamically -->
+    </div>
+
+    <!-- = SCRIPTS  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        
+        (function () {
+            'use strict';
+
+            // --- Configuration ---
+            const STORAGE_KEY = 'rp_unread_count';
+            const ALERT_AUTO_DISMISS_MS = 8000;
+            const TOAST_AUTO_HIDE_MS = 5000;
+
+            // --- State ---
+            let alertTimeoutId = null;
+
+            // --- DOM Elements (Defensive selection) ---
+            const els = {
+                badge: document.getElementById('notifBadge'),
+                alertContainer: document.getElementById('alertContainer'),
+                toastContainer: document.getElementById('toastContainer'),
+                btnAlert: document.getElementById('btnTriggerAlert'),
+                btnGrant: document.getElementById('btnGrantToast'),
+                btnSubmission: document.getElementById('btnSubmissionToast')
+            };
+
+            // --- Helpers ---
+            function storageGet() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    return raw !== null ? parseInt(raw, 10) : 4; // Default 4 to match screenshot
+                } catch (e) {
+                    console.warn('Storage access denied:', e);
+                    return 4;
+                }
+            }
+
+            function storageSet(value) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, String(value));
+                } catch (e) {
+                    console.warn('Storage write denied:', e);
+                }
+            }
+
+            // --- Badge Manager ---
+            function updateBadge(count) {
+                if (!els.badge) return;
+                const safeCount = Math.max(0, count);
+                els.badge.textContent = safeCount;
+                els.badge.style.display = safeCount > 0 ? 'inline-block' : 'none';
+                storageSet(safeCount);
+            }
+
+            function incrementBadge() {
+                const current = storageGet();
+                updateBadge(current + 1);
+            }
+
+            function showDeadlineAlert() {
+                if (!els.alertContainer) return;
+
+                // Clear any existing alert and its timer
+                els.alertContainer.innerHTML = '';
+                if (alertTimeoutId) clearTimeout(alertTimeoutId);
+
+                const alertEl = document.createElement('div');
+                alertEl.className = 'alert alert-danger alert-dismissible fade show d-flex align-items-center shadow-sm';
+                alertEl.setAttribute('role', 'alert');
+                alertEl.setAttribute('aria-live', 'assertive');
+                alertEl.innerHTML = `
+                    <i class="fas fa-circle-exclamation me-2" aria-hidden="true"></i>
+                    <div><strong>Urgent!</strong> Proposal submission deadline is tomorrow.</div>
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close deadline alert"></button>
+                `;
+
+                els.alertContainer.appendChild(alertEl);
+
+                // Auto-removal after delay
+                alertTimeoutId = setTimeout(() => {
+                    const instance = bootstrap.Alert.getOrCreateInstance(alertEl);
+                    if (instance) instance.close();
+                }, ALERT_AUTO_DISMISS_MS);
+            }
+
+            // --- Toast Manager ---
+            function spawnToast(type, message, iconClass) {
+                if (!els.toastContainer) return;
+
+                const bgClass = type === 'grant' ? 'bg-success' : 'bg-primary';
+                const toastEl = document.createElement('div');
+                toastEl.className = `toast align-items-center text-white ${bgClass} border-0 mb-2 shadow`;
+                toastEl.setAttribute('role', 'alert');
+                toastEl.setAttribute('aria-live', 'assertive');
+                toastEl.setAttribute('aria-atomic', 'true');
+                toastEl.setAttribute('data-bs-delay', String(TOAST_AUTO_HIDE_MS));
+
+                toastEl.innerHTML = `
+                    <div class="d-flex">
+                        <div class="toast-body d-flex align-items-center gap-2">
+                            <i class="fas ${iconClass}" aria-hidden="true"></i>
+                            <span>${message}</span>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close notification"></button>
+                    </div>
+                `;
+
+                els.toastContainer.appendChild(toastEl);
+
+                // Initialize and show
+                const toastInstance = new bootstrap.Toast(toastEl);
+                toastInstance.show();
+
+                toastEl.addEventListener('hidden.bs.toast', () => {
+                    toastEl.remove();
+                });
+            }
+
+            // --- null check ---
+            if (els.btnAlert) {
+                els.btnAlert.addEventListener('click', () => {
+                    showDeadlineAlert();
+                });
+            }
+
+            if (els.btnGrant) {
+                els.btnGrant.addEventListener('click', () => {
+                    spawnToast('grant', 'Your research grant has been approved.', 'fa-circle-check');
+                    incrementBadge();
+                });
+            }
+
+            if (els.btnSubmission) {
+                els.btnSubmission.addEventListener('click', () => {
+                    spawnToast('submission', 'A new journal paper has been submitted.', 'fa-file-arrow-up');
+                    incrementBadge();
+                });
+            }
+
+            // --- Initialization ---
+            
+            const initialCount = storageGet();
+            updateBadge(initialCount);
+
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annual Academic Research Report</title>
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles to Match Screenshots -->
+    <style>
+        /* Header Section */
+        .hero-section {
+            background-color: #0d6efd; /* Bootstrap primary blue */
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 300; /* Light weight as seen in screenshot */
+            letter-spacing: 1px;
+        }
+        
+        /* Section Headings */
+        .section-heading {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1.25rem;
+        }
+        
+        /* Introduction Paragraphs */
+        .intro-text {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Figures & Images */
+        .research-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 0.375rem;
+        }
+        .figure-caption {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Table Styling */
+        .table thead th {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Funding List */
+        .funding-list .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 1rem;
+            font-size: 0.95rem;
+        }
+        .funding-amount {
+            font-weight: 700;
+            color: #212529;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: #212529;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!--  HEADER -->
+    <header class="hero-section text-white text-center py-5">
+        <div class="container">
+            <h1 class="hero-title mb-2">Annual Academic Research Report</h1>
+            <p class="lead mb-4">Faculty of Computer Science | 2026</p>
+            <button id="btnToggleIntro" class="btn btn-light text-dark btn-sm px-4 py-2 rounded shadow-sm">
+                Toggle Introduction
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="container py-5">
+
+        <!-- 1. Introduction -->
+        <section id="introSection" class="mb-5">
+            <h2 class="section-heading">1. Introduction</h2>
+            <p class="intro-text">
+                This report presents a summary of academic research contributions, funding achievements, and publication statistics across departments for the academic year 2026.
+            </p>
+            <p class="intro-text">
+                The page demonstrates Bootstrap typography, responsive images, figures, and tables, enhanced with jQuery-based interactivity.
+            </p>
+        </section>
+
+        <!-- 2. Research Highlights -->
+        <section class="mb-5">
+            <h2 class="section-heading">2. Research Highlights</h2>
+            <div class="row g-4">
+                <!-- Figure 1 -->
+                <div class="col-md-6">
+                    <figure class="figure w-100 mb-0">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
+                             class="figure-img research-img" 
+                             alt="Artificial Intelligence Research Laboratory">
+                        <figcaption class="figure-caption">
+                            Figure 1: Artificial Intelligence Research Laboratory
+                        </figcaption>
+                    </figure>
+                </div>
+                <!-- Figure 2 -->
+                <div class="col-md-6">
+                    <figure class="figure w-100 mb-0">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80" 
+                             class="figure-img research-img" 
+                             alt="Data Science and Analytics Projects">
+                        <figcaption class="figure-caption">
+                            Figure 2: Data Science and Analytics Projects
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Publication Statistics -->
+        <section class="mb-5">
+            <h2 class="section-heading">3. Publication Statistics</h2>
+            
+            <!-- Search Filter -->
+            <div class="mb-3">
+                <input type="text" id="searchDept" class="form-control" placeholder="Search Department...">
+            </div>
+
+            <!-- Table Container -->
+            <div id="tableContainer">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="pubTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Department</th>
+                                <th>Journal Papers</th>
+                                <th>Conference Papers</th>
+                                <th>Patents Filed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Artificial Intelligence</td>
+                                <td>45</td>
+                                <td>32</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>Cyber Security</td>
+                                <td>28</td>
+                                <td>21</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Data Science</td>
+                                <td>35</td>
+                                <td>29</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>Software Engineering</td>
+                                <td>30</td>
+                                <td>25</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button id="btnToggleTable" class="btn btn-primary btn-sm mt-2">
+                Show/Hide Table
+            </button>
+        </section>
+
+        <!-- 4. Research Funding Overview -->
+        <section class="mb-4">
+            <h2 class="section-heading">4. Research Funding Overview</h2>
+            <p class="intro-text">
+                The institution secured significant funding from government, industry, and international research collaborations.
+            </p>
+            <ul class="list-group funding-list">
+                <li class="list-group-item">
+                    Government Grants
+                    <span class="funding-amount">$2.5 Million</span>
+                </li>
+                <li class="list-group-item">
+                    Industry Collaboration
+                    <span class="funding-amount">$1.2 Million</span>
+                </li>
+                <li class="list-group-item">
+                    International Programs
+                    <span class="funding-amount">$800,000</span>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="site-footer text-center py-3">
+        <p class="mb-0">&copy; 2026 Faculty of Computer Science | All Rights Reserved</p>
+    </footer>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery Interactivity -->
+    <script>
+        $(document).ready(function () {
+            
+            // 1. Toggle Introduction Section
+            $('#btnToggleIntro').click(function () {
+                $('#introSection').slideToggle(400);
+            });
+
+            // 2. Show/Hide Publication Table
+            $('#btnToggleTable').click(function () {
+                $('#tableContainer').toggle();
+            });
+
+            // 3. Filter Table by Department (Search)
+            $('#searchDept').on('keyup', function () {
+                var value = $(this).val().toLowerCase();
+                $('#pubTable tbody tr').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

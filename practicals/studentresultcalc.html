@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .calculator-card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            background-color: #ffffff;
+        }
+        
+        .result-display {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .result-name {
+            color: #0f5132;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-line {
+            color: #0f5132;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25em 0.6em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+        }
+        
+        .status-pass {
+            background-color: #198754;
+            color: white;
+        }
+        
+        .status-fail {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .stored-section {
+            margin-top: 2rem;
+        }
+        
+        .table thead {
+            background-color: #212529;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Main Calculator Card -->
+    <div class="card calculator-card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Student Result Calculator</h4>
+            
+            <!-- Input Row using Bootstrap Grid -->
+            <div class="row g-2 align-items-end">
+                <div class="col-12 col-md-4">
+                    <input type="text" class="form-control" id="studentName" placeholder="Student Name">
+                </div>
+                <div class="col-12 col-md-2">
+                    <input type="number" class="form-control" id="subject1" placeholder="Subject 1" min="0" max="100">
+                </div>
+                <div class="col-12 col-md-2">
+                    <input type="number" class="form-control" id="subject2" placeholder="Subject 2" min="0" max="100">
+                </div>
+                <div class="col-12 col-md-2">
+                    <input type="number" class="form-control" id="subject3" placeholder="Subject 3" min="0" max="100">
+                </div>
+                <div class="col-12 col-md-2">
+                    <button class="btn btn-primary w-100" id="calculateBtn">Calculate</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Result Display -->
+            <div id="resultContainer" class="result-display d-none">
+                <div class="result-name" id="displayName"></div>
+                <div class="result-line">Total: <span id="displayTotal"></span></div>
+                <div class="result-line">Average: <span id="displayAverage"></span></div>
+                <div class="result-line">Percentage: <span id="displayPercentage"></span>%</div>
+                <div class="result-line">Grade: <span id="displayGrade"></span></div>
+                <div class="result-line">Result: <span id="displayStatus"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stored Results Section -->
+    <div class="stored-section">
+        <h5 class="mb-3">Stored Results</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Total</th>
+                        <th>Percentage</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                   
+                    <tr>
+                        <td>John Doe</td>
+                        <td>233</td>
+                        <td>77.67%</td>
+                        <td><span class="status-badge status-pass">Pass</span></td>
+                    </tr>
+                    <tr>
+                        <td>Jane Doe</td>
+                        <td>70</td>
+                        <td>23.33%</td>
+                        <td><span class="status-badge status-fail">Fail</span></td>
+                    </tr>
+                    <tr>
+                        <td>Austin Greene</td>
+                        <td>145</td>
+                        <td>48.33%</td>
+                        <td><span class="status-badge status-pass">Pass</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Bootstrap Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+    // Calculate button click event
+    $('#calculateBtn').click(function() {
+        calculateResult();
+    });
+
+
+    function calculateResult() {
+        // Get values using jQuery val()
+        let name = $('#studentName').val().trim();
+        let s1 = parseFloat($('#subject1').val()) || 0;
+        let s2 = parseFloat($('#subject2').val()) || 0;
+        let s3 = parseFloat($('#subject3').val()) || 0;
+
+        // Validation
+        if (name === '') {
+            alert('Please enter student name');
+            $('#studentName').focus();
+            return;
+        }
+
+        // Validate marks range (0-100)
+        if (s1 > 100 || s2 > 100 || s3 > 100) {
+            alert('Marks cannot exceed 100');
+            return;
+        }
+
+        // Calculations
+        let total = s1 + s2 + s3;
+        let maxMarks = 300;
+        let percentage = (total / maxMarks) * 100;
+        let average = total / 3;
+
+        // Determine Grade
+        let grade = '';
+        if (percentage >= 90) grade = 'A+';
+        else if (percentage >= 80) grade = 'A';
+        else if (percentage >= 70) grade = 'B';
+        else if (percentage >= 60) grade = 'C';
+        else if (percentage >= 50) grade = 'D';
+        else if (percentage >= 40) grade = 'E';
+        else grade = 'F';
+
+        // Determine Pass/Fail 
+        let isPass = percentage >= 40;
+        let statusText = isPass ? 'Pass' : 'Fail';
+        let statusClass = isPass ? 'status-pass' : 'status-fail';
+
+        // DOM Manipulation - Display Results dynamically
+        $('#displayName').text(name);
+        $('#displayTotal').text(total);
+        $('#displayAverage').text(average.toFixed(2));
+        $('#displayPercentage').text(percentage.toFixed(2));
+        $('#displayGrade').text(grade);
+        
+        // Create status badge dynamically
+        $('#displayStatus').html('<span class="status-badge ' + statusClass + '">' + statusText + '</span>');
+
+        // Show result container 
+        $('#resultContainer').removeClass('d-none');
+
+        // Add to stored results table
+        addToTable(name, total, percentage, statusText, statusClass);
+        
+        
+    }
+
+    function addToTable(name, total, percentage, status, statusClass) {
+        // Create new row HTML
+        let newRow = '<tr>' +
+            '<td>' + name + '</td>' +
+            '<td>' + total + '</td>' +
+            '<td>' + percentage.toFixed(2) + '%</td>' +
+            '<td><span class="status-badge ' + statusClass + '">' + status + '</span></td>' +
+            '</tr>';
+
+        // Append to table body using jQuery
+        $('#tableBody').append(newRow);
+    }
+
+    // Enter key support for inputs
+    $('#studentName, #subject1, #subject2, #subject3').keyup(function(e) {
+        if (e.key === 'Enter') {
+            $('#calculateBtn').click();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
