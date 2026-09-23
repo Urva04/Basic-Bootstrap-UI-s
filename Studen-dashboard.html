@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Learning Dashboard</title>
+  
+   <!-- Bootstrap CSS -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Bootstrap Icons -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #fcfcfc;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Top Blue Header */
+    .top-nav {
+      background-color: #0d6efd;
+      color: white;
+      padding: 12px 20px;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      background-color: #f8f9fa;
+      min-height: calc(100vh - 50px);
+      border-right: 1px solid #eee;
+    }
+
+    .sidebar .menu-label {
+      padding: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .nav-link {
+      color: #555;
+      padding: 12px 20px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      background-color: #eef2f7;
+      color: #0d6efd;
+    }
+
+    /* Card Styling */
+    .card {
+      border: 1px solid #eaeaea;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .section-header {
+      font-weight: 700;
+      margin: 30px 0 20px 0;
+    }
+
+    /* Custom Status Badges */
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+      color: white;
+    }
+    
+    .bg-tomorrow { background-color: #dc3545; }
+    .bg-in-2-days { background-color: #ffc107; color: #000; }
+    .bg-completed { background-color: #198754; }
+
+    /* Progress bar height */
+    .progress {
+      height: 10px;
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav shadow-sm">
+    E-Learning Dashboard
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block sidebar p-0">
+        <div class="menu-label">Menu</div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="mycourses.html"><i class="bi bi-book me-2"></i> My Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-journal-text me-2"></i> Assignments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-person me-2"></i> Profile</a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="col-md-10 px-md-4">
+        
+        <h4 class="section-header">My Courses</h4>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card p-3">
+              <h6 class="fw-bold mb-1">Data Structures</h6>
+              <p class="text-muted small">Learn stacks, queues, trees, and graphs.</p>
+              <div class="progress mt-3">
+                <div class="progress-bar" style="width: 70%">70%</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <h6 class="fw-bold mb-1">Web Development</h6>
+              <p class="text-muted small">HTML, CSS, Bootstrap, and JavaScript.</p>
+              <div class="progress mt-3">
+                <div class="progress-bar bg-success" style="width: 45%">45%</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <h6 class="fw-bold mb-1">AI Fundamentals</h6>
+              <p class="text-muted small">Introduction to AI & ML concepts.</p>
+              <div class="progress mt-3">
+                <div class="progress-bar bg-warning text-dark" style="width: 30%">30%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="section-header">Progress & Deadlines</h4>
+        <div class="row g-4 mb-5">
+          <div class="col-md-4">
+            <div class="card p-3">
+              <p class="mb-0 fw-bold">Assignment Due</p>
+              <p class="text-muted small">DSA – Linked List</p>
+              <div class="mt-2">
+                <span class="status-badge bg-tomorrow">Tomorrow</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <p class="mb-0 fw-bold">Quiz Scheduled</p>
+              <p class="text-muted small">Web Development</p>
+              <div class="mt-2">
+                <span class="status-badge bg-in-2-days">In 2 Days</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-3">
+              <p class="mb-0 fw-bold">Project Review</p>
+              <p class="text-muted small">AI Mini Project</p>
+              <div class="mt-2">
+                <span class="status-badge bg-completed">Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>

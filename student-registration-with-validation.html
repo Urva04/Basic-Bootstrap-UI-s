@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Registration</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    .form-control, .form-select {
+      border-radius: 10px;
+    }
+
+    .btn-register {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      border: none;
+      border-radius: 30px;
+      padding: 12px 30px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .icon-box {
+      font-size: 1.2rem;
+      color: #764ba2;
+    }
+	
+	
+    .is-invalid {
+      border: 2px solid #dc3545;
+    }
+    .is-valid {
+      border: 2px solid #198754;
+    }
+  
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-12 col-md-12">
+
+      <div class="card p-4">
+        <div class="text-center mb-4">
+          <h2 class="fw-bold">Student Registration</h2>
+          <p class="text-muted">Create your academic profile</p>
+        </div>
+
+        <form>
+
+          <div class="row g-3">
+            <!-- First Name -->
+            <div class="col-md-6">
+              <label class="form-label">First Name</label>
+              <div class="input-group">
+                <span class="input-group-text icon-box"><i class="bi bi-person"></i></span>
+                <input type="text" id="first-name" class="form-control" placeholder="Enter first name" required>
+              </div>
+			  <small class="text-danger" id="firstNameErr"></small>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6">
+              <label class="form-label">Last Name</label>
+              <div class="input-group">
+                <span class="input-group-text icon-box"><i class="bi bi-person"></i></span>
+                <input type="text" id="last-name" class="form-control" placeholder="Enter last name" required>
+             
+
+			  </div>
+			   <small class="text-danger" id="lastNameErr"></small>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+              <label class="form-label">Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text icon-box"><i class="bi bi-envelope"></i></span>
+                <input type="email" id="email" class="form-control" placeholder="example@mail.com" required>
+               
+
+			  </div>
+			   <small class="text-danger" id="emailErr"></small>
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6">
+              <label class="form-label">Mobile Number</label>
+              <div class="input-group">
+                <span class="input-group-text icon-box"><i class="bi bi-phone"></i></span>
+                <input type="tel" id="phone" class="form-control" placeholder="10-digit number" required>
+                
+
+			  </div>
+			  <small class="text-danger" id="phoneErr"></small>
+            </div>
+
+            <!-- Course -->
+            <div class="col-md-6">
+              <label class="form-label">Course</label>
+              <select class="form-select" required>
+                <option selected disabled>Select course</option>
+                <option>B.Tech – CSE</option>
+                <option>B.Tech – AI</option>
+                <option>B.Tech – Cyber Security</option>
+                <option>BCA</option>
+                <option>MCA</option>
+              </select>
+            </div>
+
+            <!-- Year -->
+            <div class="col-md-6">
+              <label class="form-label">Year of Study</label>
+              <select class="form-select" required>
+                <option selected disabled>Select year</option>
+                <option>First Year</option>
+                <option>Second Year</option>
+                <option>Third Year</option>
+                <option>Final Year</option>
+              </select>
+            </div>
+
+            <!-- Password -->
+            <div class="col-md-6">
+              <label class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text icon-box"><i class="bi bi-lock"></i></span>
+                <input type="password" id="password" class="form-control" placeholder="Create password" required>
+
+              </div>
+			  <small class="text-danger" id="passErr"></small>
+
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="col-md-6">
+              <label class="form-label">Confirm Password</label>
+              <div class="input-group">
+                <span class="input-group-text icon-box"><i class="bi bi-lock-fill"></i></span>
+                <input type="password" id="confirm" class="form-control" placeholder="Re-enter password" required>
+              
+			  </div>
+			  <small class="text-danger" id="confirmErr"></small>
+            </div>
+
+            <!-- Terms -->
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" required>
+                <label class="form-check-label">
+                  I agree to the <a href="#">terms and conditions</a>
+                </label>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="col-12 text-center mt-4">
+              <button type="submit" id="register" class="btn btn-register text-white btn-lg" disabled>
+                Register Now
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ================= TOAST ================= -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="successToast" class="toast">
+    <div class="toast-header bg-success text-white">
+      <strong class="me-auto">Registration</strong>
+      <button class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+    </div>
+    <div class="toast-body">
+      Student registered successfully!
+    </div>
+  </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+
+<script>
+
+$(function(){
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  /* ================= VALIDATION FUNCTIONS ================= */
+  function validateFirstName(){
+    let name = $("#first-name").val().trim();
+    if(name === ""){
+      $("#firstNameErr").text("First Name is required");
+      $("#first-name").addClass("is-invalid").removeClass("is-valid");
+      return false;
+    }
+    $("#firstNameErr").text("");
+    $("#first-name").addClass("is-valid").removeClass("is-invalid");
+    return true;
+  }
+  function validateLastName(){
+    let name = $("#last-name").val().trim();
+    if(name === ""){
+      $("#lastNameErr").text("Last Name is required");
+      $("#last-name").addClass("is-invalid").removeClass("is-valid");
+      return false;
+    }
+    $("#lastNameErr").text("");
+    $("#last-name").addClass("is-valid").removeClass("is-invalid");
+    return true;
+  }
+function validateEmail(){
+    let email = $("#email").val().trim();
+    let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if(!pattern.test(email)){
+      $("#emailErr").text("Invalid email format");
+      $("#email").addClass("is-invalid").removeClass("is-valid");
+      return false;
+    }
+    $("#emailErr").text("");
+    $("#email").addClass("is-valid").removeClass("is-invalid");
+    return true;
+  }
+  function validatePhone(){
+  
+    let phone = $("#phone").val().trim();
+	let phonePattern = /^[0-9]{10}$/;
+    if(!phonePattern.test(phone)){
+      $("#phoneErr").text("Invalid phone format");
+      $("#phone").addClass("is-invalid").removeClass("is-valid");
+      return false;
+    }
+    $("#phoneErr").text("");
+    $("#phone").addClass("is-valid").removeClass("is-invalid");
+	return true;
+  }
+function validatePassword(){
+    let pass = $("#password").val();
+    if(pass.length < 6){
+      $("#passErr").text("Minimum 6 characters");
+      $("#password").addClass("is-invalid").removeClass("is-valid");
+      return false;
+    }
+    $("#passErr").text("");
+    $("#password").addClass("is-valid").removeClass("is-invalid");
+    return true;
+  }
+
+  function validateConfirm(){
+    if($("#password").val() !== $("#confirm").val()){
+      $("#confirmErr").text("Passwords do not match");
+      $("#confirm").addClass("is-invalid").removeClass("is-valid");
+      return false;
+    }
+    $("#confirmErr").text("");
+    $("#confirm").addClass("is-valid").removeClass("is-invalid");
+    return true;
+  }
+
+function checkForm(){
+    let valid =
+      validateFirstName() &
+	  validateLastName() &
+      validateEmail() &
+      validatePassword() &
+      validateConfirm()&
+		validatePhone();
+    $("#register").prop("disabled", !valid);
+    return valid;
+  }
+
+  /* ================= LIVE VALIDATION ================= */
+  $("input").keyup(checkForm);
+
+  /* ================= REGISTER ================= */
+  $("#register").click(function(){
+	//console.log(checkForm);
+    if(!checkForm()) return;
+
+    let user = {
+      name: $("#first-name").val(),
+      email: $("#email").val()
+    };
+
+    users.push(user);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    new bootstrap.Toast($("#successToast")).show();
+
+    $("input").val("").removeClass("is-valid");
+    $("#register").prop("disabled", true);
+	});  
+  });
+</script>
+</body>
+</html>
